@@ -1,42 +1,214 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('assets/background4.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  margin: 0;
+  color: #fff;
+}
+
+.app {
   text-align: center;
+  width: 100%;
+  max-width: 1200px;  /* Makes sure the content doesn't stretch too wide on large screens */
+}
+
+.navbar {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10; /* Ensures navbar is always on top */
+}
+
+.nav-button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  text-transform: uppercase;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-button:hover {
+  background-color: #555;
+  transform: translateY(-2px);
+}
+
+.main-content {
+  padding-top: 100px;
+  text-align: center;
+  z-index: 5;
+}
+
+.main-content h1 {
+  font-size: 60px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.main-content h3 {
+  font-size: 28px;
+  margin-bottom: 40px;
+  color: #ddd;
+}
+
+.sign-up {
+  margin-top: 100px;
+  z-index: 5;
+}
+
+.sign-up h4 {
+  font-size: 22px;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.sign-up input {
+  padding: 15px;
+  font-size: 16px;
+  width: 100%;
+  max-width: 400px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 20px;
+  color: #333;
+  transition: border-color 0.3s ease;
+}
+
+.sign-up input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.get-started-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 15px 30px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.get-started-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.sign-up input::placeholder {
+  color: #aaa;
 }
 
 .logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 120px;
+  height: auto;
+  font-size: 50px;
+  font-weight: 700;
+  color: #fff;
+  z-index: 10;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.dashboard-container {
+  position: absolute;
+  color:black;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;  
+  max-width: 600px;  
+  height: 85%; 
+  background-color: #fff;
+  border-radius: 20px; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 10);
+  padding: 30px; 
+  box-sizing: border-box;  
 }
 
-.card {
-  padding: 2em;
+.create-account-title{
+  text-align:center;
+  padding-bottom:20px;
 }
 
-.read-the-docs {
-  color: #888;
+.dashboard-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; 
+  max-width: 400px; 
+  margin: 0 auto;
+}
+
+.dashboard-form input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-form input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.dashboard-form label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.dashboard-form button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 15px;
+  margin-top:25px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 2s ease, transform 2s ease;
+}
+
+.dashboard-form button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.password-match {
+  font-size: 14px;
+  color: green; 
+  margin-top: 5px;
+}
+
+.password-mismatch {
+  font-size: 14px;
+  color: red; 
+  margin-top: 5px;
 }
