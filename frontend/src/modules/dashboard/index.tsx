@@ -22,7 +22,7 @@ const MainMenu: React.FC = () => {
                     </ul>
                 </div>
             </nav>
-            <div id="main-content-area">
+            <div id="main-content-area" >
                 Hello!
             </div>
         </>

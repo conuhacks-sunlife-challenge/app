@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 import './index.css';
 import snappy_logo from '../../assets/snappy_logo.svg';
+// import MainMenu from '../dashboard';
 
 const Home = () => {
   const [email, setEmail] = useState("");
@@ -14,6 +15,8 @@ const Home = () => {
   };
 
   return (
+    <>
+    {/* <MainMenu/> ---for demonstration--- */}
     <div className="home">
       <div className="logo"><a href="/"><img src={snappy_logo} id="logo" /></a></div>
       <div className="navbar">
@@ -38,6 +41,7 @@ const Home = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
