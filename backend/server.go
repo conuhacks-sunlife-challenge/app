@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 	"server/Database"
-	"server/Plaid"
+	"server/plaid"
 
 	"github.com/joho/godotenv"
 )
@@ -31,6 +31,5 @@ func main() {
 	}
 
 	db.Ping()
-	Plaid.Init()
-	Plaid.Run()
+	plaid.Run()
 }
