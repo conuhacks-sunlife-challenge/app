@@ -22,7 +22,7 @@ func check(err error) {
 }
 
 func init() {
-	Plaid.Init()
+	plaid.Init()
 
 	godotenv.Load()
 	mongodb_user := os.Getenv("DATABASE_USERNAME")
@@ -57,7 +57,21 @@ func newUserHandler(ctx *gin.Context) {
 	ctx.Status(200)
 }
 
+type Credentials struct {
+    Email string `bson:"_id"`
+    Password string `bson:"password"`
+}
 func authenticationHandler(ctx *gin.Context) {
+	credentials := Credentials{}
+	err := ctx.BindJSON(&credentials)
+	check(err)
+
+	success, err := db.Authenticate(credentials.Email, credentials.Password)
+	check(err)
+	if !success {
+		ctx.AbortWithStatus(400)
+	}
+	ctx.Status(200)
 }
 
 func main() {
@@ -69,10 +83,11 @@ func main() {
 
 	r := gin.Default()
 	r.Use(static.Serve("/", static.LocalFile("../frontend/dist", true)))
-	r.POST("api/createLinkToken", Plaid.CreateLinkToken)
-	r.POST("api/getAccessToken", Plaid.GetAccessToken)
+	r.POST("api/createLinkToken", plaid.CreateLinkToken)
+	r.POST("api/getAccessToken", plaid.GetAccessToken)
 	r.POST("api/newUser", newUserHandler)
-	r.POST("api/accounts", accounts)
-	r.POST("api/transactions", transactions)
+	r.POST("api/accounts", plaid.accounts)
+	r.POST("api/transactions", plaid.transactions)
+	r.POST("api/auth", authenticationHandler)
 	r.Run()
 }

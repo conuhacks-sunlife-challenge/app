@@ -100,5 +100,4 @@ func GetAccessToken(c *gin.Context) {
 	fmt.Println("item ID: " + itemID)
 
 	c.JSON(http.StatusOK, gin.H{"public_token_exchange": "complete"})
->>>>>>> efd0d77 (feat: Connect new user form to database)
 }

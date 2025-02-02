@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './index.css';
 import User from '../../types/user';
 import endpoints from '../../endpoints';
+import Credentials from '../../types/credentials';
 
 const Login: React.FC = () => {
 
@@ -11,9 +12,9 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const authenticate = async (user: User) => {
-    const body = JSON.stringify(user)
-    const req = new Request(endpoints.NewUser, {
+  const authenticate = async (credentials: Credentials) => {
+    const body = JSON.stringify(credentials)
+    const req = new Request(endpoints.Auth, {
 
       method: 'POST',
       headers: {
@@ -30,8 +31,18 @@ const Login: React.FC = () => {
 
 
     console.log('Form submitted:', {email, password });
-    setEmail('');
+    const authStatus = await authenticate({
+      Email: email,
+      Password: password,
+    })
+
     setPassword('');
+
+    if (authStatus !== 200) {
+      return
+    }
+
+    setEmail('');
 
     navigate('/prompts');
 
