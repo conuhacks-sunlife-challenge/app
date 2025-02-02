@@ -1,9 +1,9 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import Home from './modules/home/index.tsx'
+import AppWrapper from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Home />
+    <AppWrapper />
   </StrictMode>,
 )
