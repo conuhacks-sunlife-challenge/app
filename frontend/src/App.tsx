@@ -10,7 +10,7 @@ const AppWrapper = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home />}/>
         <Route path="/create-account" element={<Dashboard />} />
         <Route path="/main-menu" element={<MainMenu />} />
         <Route path='/prompts' element={<Prompts/>}/>

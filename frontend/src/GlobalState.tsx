@@ -4,6 +4,8 @@ import Credentials from "./types/credentials";
 type GlobalState = {
   credentials: Credentials | undefined,
   setCredentials: (value: Credentials) => void;
+  loggedIn: boolean,
+  setLoggedIn: (value: boolean) => void;
 };
 
 const GlobalStateContext = createContext<GlobalState | undefined>(undefined);
@@ -18,12 +20,15 @@ export const useGlobalState = () => {
 
 export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
   const [credentials, setCredentials] = useState<Credentials | undefined>(undefined);
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
 
   return (
     <GlobalStateContext.Provider value={{ 
       credentials,
       setCredentials,
+      loggedIn,
+      setLoggedIn,
     }}>
       {children}
     </GlobalStateContext.Provider>

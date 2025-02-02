@@ -56,7 +56,7 @@ const Dashboard: React.FC = () => {
     setPassword('');
     setConfirmPassword('');
 
-    navigate('/prompts');
+    navigate('/login');
 
   };
 

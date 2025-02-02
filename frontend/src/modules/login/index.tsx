@@ -13,7 +13,7 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [incorrect, setIncorrect] = useState<boolean>(false);
-  const {setCredentials} = useGlobalState();
+  const {setCredentials, setLoggedIn} = useGlobalState();
 
   const authenticate = async (credentials: Credentials) => {
     const body = JSON.stringify(credentials)
@@ -48,6 +48,7 @@ const Login: React.FC = () => {
     }
 
     setCredentials(credentials)
+    setLoggedIn(true)
     setEmail('');
 
     navigate('/prompts');
