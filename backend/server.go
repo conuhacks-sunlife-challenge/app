@@ -4,6 +4,8 @@ import (
 	"os"
 	"server/Database"
 	"server/Plaid"
+
+	"github.com/joho/godotenv"
 )
 
 func pingDb() {
@@ -16,6 +18,7 @@ func pingDb() {
 }
 
 func main() {
+	godotenv.Load()
 	mongodb_user := os.Getenv("DATABASE_USERNAME")
 	mongodb_password := os.Getenv("DATABASE_PASSWORD")
 	mongodb_uri := os.Getenv("DATABASE_URI")
