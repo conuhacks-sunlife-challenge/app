@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 import './index.css';
 
 const Dashboard: React.FC = () => {
+
+  const navigate = useNavigate();
   
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
@@ -26,6 +29,9 @@ const Dashboard: React.FC = () => {
     setEmail('');
     setPassword('');
     setConfirmPassword('');
+
+    navigate('/prompts');
+
   };
 
   const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {

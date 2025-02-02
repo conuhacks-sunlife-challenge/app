@@ -1,0 +1,103 @@
+body{
+    overflow:hidden;
+}
+
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 95vh;
+    background: white; 
+    color: #333;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .create-account-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: -10px;
+    text-align: center;
+    color: #222;
+    
+  }
+  
+  .dashboard-form {
+    background: #f9f9f9; 
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 400px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #444;
+  }
+  
+  input,
+  select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    background: white;
+    color: #333;
+    outline: none;
+  }
+  
+  input::placeholder {
+    color: #999;
+  }
+  
+  .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #444;
+  }
+  
+  .checkbox-label input {
+    width: 18px;
+    height: 18px;
+    margin-right:10px;
+  }
+
+  .skip-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: black; /* Netflix red */
+    color: white;
+    font-size: 16px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .skip-button:hover {
+    background: darkblue; /* Lighter red on hover */
+  }
+
+  
+
+  
