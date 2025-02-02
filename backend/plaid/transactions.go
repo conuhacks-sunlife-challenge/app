@@ -50,7 +50,7 @@ func Transactions(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"Transactions":      transactionsResp.Transactions,
-		"TotalTransactions": transactionsResp.TotalTransactions,
+		"Transactions": transactionsResp.Transactions,
+		"Accounts":     transactionsResp.Accounts,
 	})
 }
