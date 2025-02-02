@@ -66,12 +66,8 @@ var environments = map[string]plaid.Environment{
 	"sandbox": plaid.Sandbox,
 }
 
-func main() {
-	err := godotenv.Overload()
-	if err != nil {
-		panic("Could not load dotenv")
-	}
 
+func main() {
 	mongodb_user := os.Getenv("DATABASE_USERNAME")
 	mongodb_password := os.Getenv("DATABASE_PASSWORD")
 	mongodb_uri := os.Getenv("DATABASE_URI")
@@ -84,14 +80,6 @@ func main() {
 	}
 
 	db.Ping()
-
-	success, err := db.AddUser("a@a", "123", "John", "Doe")
-	if err != nil {
-		panic(err)
-	}
-	if !success {
-		panic("Didn't add user!")
-	}
 
 	r := gin.Default()
 	r.POST("api/createLinkToken", createLinkToken)
