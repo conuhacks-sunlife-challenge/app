@@ -1,16 +1,18 @@
 package Database
 
 import (
-	"errors"
-	"fmt"
+    "fmt"
 
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
+    "go.mongodb.org/mongo-driver/bson"
+    "go.mongodb.org/mongo-driver/mongo"
+    "golang.org/x/crypto/bcrypt"
 )
+
+var dummyHash = "$2a$10$dXJwaS5tYWluZy5jb20udG9kYXkqYEBAJCQkJCDAwMDAwMDAw"
 
 type User struct {
     Email string `bson:"_id"`
-    Password string `bson:"password"`
+    Password []byte `bson:"password"`
     FirstName string `bson:"first_name"`
     LastName string `bson:"last_name"`
     RecentFailedLoginAttempts string `bson:"recent_failed_login_attempts"`
@@ -18,39 +20,41 @@ type User struct {
 
 
 // TODO: Change input to be one object
-func (db DatabaseInstance) AddUser(email, password, firstname, lastname string) (bool, error) {
+func (db DatabaseInstance) AddUser(email, password, first_name, last_name string) error {
 
     usersCollection := db.production.Collection("users")
     duplicateUser, err := db.CheckUser(email)
 
     if err != nil {
-        return false, err
+        return err
     }
 
     if duplicateUser != nil {
-        return false, fmt.Errorf("User already exists! Please check for existing user before adding. Email: %s", duplicateUser.Email)
+        return fmt.Errorf("User already exists! Please check for existing user before adding. Email: %s", duplicateUser.Email)
     }
 
-    user := User{
+    hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+    user := User {
         Email: email,
-        Password: password,
-        FirstName: firstname,
-        LastName: lastname,
+        Password: hashedPassword,
+        FirstName: first_name,
+        LastName: last_name,
     }
 
     usersCollection.InsertOne(db.ctx, user)
 
 
-    return true, nil
+    return nil
 }
 
 func (db DatabaseInstance) CheckUser(email string) (*User, error) {
     usersCollection := db.production.Collection("users")
 
-    filter := bson.D{{"_id", email}}
+    filter := bson.M{"_id": email}
     var user User
     err := usersCollection.FindOne(db.ctx, filter).Decode(&user)
 
+    fmt.Println(user)
     if err != nil {
         if err == mongo.ErrNoDocuments {
             return nil, nil
@@ -61,36 +65,28 @@ func (db DatabaseInstance) CheckUser(email string) (*User, error) {
     return &user, nil
 }
 
-// TODO: make secure
 func (db DatabaseInstance) Authenticate(email, password string) (bool, error) {
 
     usersCollection := db.production.Collection("users")
 
-    filter := bson.D{{"email", email}}
-    cursor, err := usersCollection.Find(db.ctx, filter)
-    if err != nil {
+    filter := bson.M{"_id": email}
+    var user User
+    err := usersCollection.FindOne(db.ctx, filter).Decode(&user)
+
+    if err == mongo.ErrNoDocuments {
+        _ = bcrypt.CompareHashAndPassword([]byte(dummyHash), []byte(password))
+        return false, nil
+    } else if err != nil {
         return false, err
     }
 
-    var results []User
-    err = cursor.All(db.ctx, &results)
+    err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+
     if err != nil {
-        return false, err
-    }
-
-    if len(results) > 1 {
-        return false, errors.New("Duplicate user with the same email!")
-    }
-
-    if len(results) == 0 {
         return false, nil
     }
 
-    user := results[0]
-    if user.Password == password {
-        return true, nil
-    }
-
-    return false, nil
+    return true, nil
 }
+
 

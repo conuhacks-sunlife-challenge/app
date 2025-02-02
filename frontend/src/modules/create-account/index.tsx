@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './index.css';
+import User from '../../types/user';
+import endpoints from '../../endpoints';
 
 const Dashboard: React.FC = () => {
 
@@ -12,18 +14,42 @@ const Dashboard: React.FC = () => {
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [passwordMatch, setPasswordMatch] = useState<boolean>(true);
+  const [failedCreateUser, setFailedCreateUser] = useState<boolean>(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const authenticate = async (user: User) => {
+    const body = JSON.stringify(user)
+    const req = new Request(endpoints.NewUser, {
+
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: body,
+    })
+    const res = await fetch(req)
+    return res.status
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
-      setPasswordMatch(false);
-      return;
+    if (!passwordMatch) {
+      return
     }
-
-    setPasswordMatch(true);
     console.log('Form submitted:', { firstName, lastName, email, password });
+    const authStatus = await authenticate({
+      Email: email,
+      Password: password,
+      FirstName: firstName,
+      LastName: lastName
+    })
 
+    console.log("auth status:", authStatus)
+    if (authStatus !== 200) {
+      setFailedCreateUser(true)
+      return
+    }
+    
     setFirstName('');
     setLastName('');
     setEmail('');
@@ -38,6 +64,25 @@ const Dashboard: React.FC = () => {
     setConfirmPassword(e.target.value);
     setPasswordMatch(e.target.value === password);
   };
+
+  const LoginInformation = () => {
+    if (failedCreateUser) {
+      return (
+            <div className="password-mismatch">User already exists!</div>
+      )
+    }
+    if (!passwordMatch) {
+      return (
+            <div className="password-mismatch">Passwords do not match!</div>
+
+      )
+    }
+    if (passwordMatch && confirmPassword) {
+      return (
+            <div className="password-match">Passwords match!</div>
+      )
+    }
+  }
 
   return (
     <div className="dashboard-container">
@@ -97,12 +142,7 @@ const Dashboard: React.FC = () => {
             placeholder="Confirm your password"
             required
           />
-          {!passwordMatch && (
-            <div className="password-mismatch">Passwords do not match!</div>
-          )}
-          {passwordMatch && confirmPassword && (
-            <div className="password-match">Passwords match!</div>
-          )}
+          <LoginInformation/>
         </div>
         <button type="submit">Sign Up</button>
       </form>

@@ -10,7 +10,7 @@ import (
 	"github.com/plaid/plaid-go/plaid"
 )
 
-func accounts(c *gin.Context) {
+func Accounts(c *gin.Context) {
 
 	if accessToken == "" {
 		fmt.Println("Something went wrong!")
@@ -32,7 +32,7 @@ func accounts(c *gin.Context) {
 	})
 }
 
-func transactions(c *gin.Context) {
+func Transactions(c *gin.Context) {
 
 	ctx := context.Background()
 

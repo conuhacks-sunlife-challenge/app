@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './index.css';
+import User from '../../types/user';
+import endpoints from '../../endpoints';
+import Credentials from '../../types/credentials';
 
 const Login: React.FC = () => {
 
@@ -8,15 +11,40 @@ const Login: React.FC = () => {
   
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [incorrect, setIncorrect] = useState<boolean>(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const authenticate = async (credentials: Credentials) => {
+    const body = JSON.stringify(credentials)
+    const req = new Request(endpoints.Auth, {
+
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: body,
+    })
+    const res = await fetch(req)
+    return res.status
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
 
     console.log('Form submitted:', {email, password });
+    const authStatus = await authenticate({
+      Email: email,
+      Password: password,
+    })
+
+    setPassword('');
+
+    if (authStatus !== 200) {
+      setIncorrect(true)
+      return
+    }
 
     setEmail('');
-    setPassword('');
 
     navigate('/prompts');
 
@@ -46,6 +74,7 @@ const Login: React.FC = () => {
             required
           />
         </div>
+        {incorrect && (<div className="password-mismatch">Incorrect credentials!</div>) }
 
         <button type="submit">Login</button>
       </form>
