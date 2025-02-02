@@ -15,11 +15,11 @@ type User struct {
     Password []byte `bson:"password"`
     FirstName string `bson:"first_name"`
     LastName string `bson:"last_name"`
-    RecentFailedLoginAttempts string `bson:"recent_failed_login_attempts"`
+    ItemID string `bson:"item_id"`
+    AccessToken string `bson:"access_token"`
 }
 
 
-// TODO: Change input to be one object
 func (db DatabaseInstance) AddUser(email, password, first_name, last_name string) error {
 
     usersCollection := db.production.Collection("users")

@@ -8,9 +8,7 @@ const Home = () => {
   const navigate = useNavigate();
   const login = useNavigate();
 
-  const handleSubmit = (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
-    console.log("Email:", email);
+  const createAccount = () => {
     navigate('/create-account');
   };
 
@@ -33,16 +31,7 @@ const Home = () => {
 
         <div className="sign-up">
           <h4>Enter your email to create an account.</h4>
-          <form onSubmit={handleSubmit}>
-            <input
-              type="email"
-              placeholder="Email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <button type="submit" className="get-started-button">Get Started</button>
-          </form>
+            <button onClick={createAccount} className="get-started-button">Get Started</button>
         </div>
       </div>
     </div>
