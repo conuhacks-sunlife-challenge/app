@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import './index.css';
+import { redirect, useNavigate } from 'react-router-dom';
 
 const Prompts: React.FC = () => {
   const [age, setAge] = useState<number | ''>('');
   const [occupation, setOccupation] = useState<string>('');
   const [income, setIncome] = useState<number | ''>('');
   const [purpose, setPurpose] = useState<string[]>([]);
+  const navigate = useNavigate();
 
   const handlePurposeChange = (value: string) => {
     setPurpose((prev) =>
@@ -22,12 +24,13 @@ const Prompts: React.FC = () => {
     }
 
     console.log('Form Data:', { age, occupation, income, purpose });
-    alert('Form submitted successfully!');
 
     setAge('');
     setOccupation('');
     setIncome('');
     setPurpose([]);
+
+    navigate('/plaid')
   };
 
   return (
