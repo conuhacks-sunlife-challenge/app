@@ -9,8 +9,8 @@ import (
     "go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func Connect(user, pass string) DatabaseInstance {
-    opts := options.Client().ApplyURI("mongodb+srv://cluster0.dexa4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0").SetAuth(options.Credential{
+func Connect(user, pass, uri string) DatabaseInstance {
+    opts := options.Client().ApplyURI(uri).SetAuth(options.Credential{
         AuthMechanism: "SCRAM-SHA-1", // or "SCRAM-SHA-1"
         AuthSource:    "admin",         // the database where the user is defined
         Username:      user,
@@ -37,6 +37,7 @@ func (db DatabaseInstance) Disconnect() {
 }
 
 func (db DatabaseInstance) ForceDropRestart() {
+    db.production.Collection("users").Drop(db.ctx)
     db.production.Drop(db.ctx)
     db.production.CreateCollection(db.ctx, "users")
 }
