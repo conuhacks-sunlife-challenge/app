@@ -1,6 +1,8 @@
 package plaid
 
 import (
+	"server/Database"
+
 	"github.com/plaid/plaid-go/plaid"
 )
 
@@ -18,5 +20,6 @@ var (
 	}
 	itemID      = ""
 	accessToken = ""
+	db = Database.DatabaseInstance{}
 )
 

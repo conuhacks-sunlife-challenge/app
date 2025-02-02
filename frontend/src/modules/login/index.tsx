@@ -4,6 +4,7 @@ import './index.css';
 import User from '../../types/user';
 import endpoints from '../../endpoints';
 import Credentials from '../../types/credentials';
+import { useGlobalState } from '../../GlobalState';
 
 const Login: React.FC = () => {
 
@@ -12,6 +13,7 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [incorrect, setIncorrect] = useState<boolean>(false);
+  const {setCredentials} = useGlobalState();
 
   const authenticate = async (credentials: Credentials) => {
     const body = JSON.stringify(credentials)
@@ -32,10 +34,11 @@ const Login: React.FC = () => {
 
 
     console.log('Form submitted:', {email, password });
-    const authStatus = await authenticate({
+    const credentials = {
       Email: email,
       Password: password,
-    })
+    }
+    const authStatus = await authenticate(credentials)
 
     setPassword('');
 
@@ -44,6 +47,7 @@ const Login: React.FC = () => {
       return
     }
 
+    setCredentials(credentials)
     setEmail('');
 
     navigate('/prompts');

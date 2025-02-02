@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { usePlaidLink } from 'react-plaid-link';
+import { useGlobalState } from '../../GlobalState';
+
 
 const PlaidIntegration: React.FC = () => {
   const [linkToken, setLinkToken] = useState<string | null>(null);
@@ -21,12 +23,17 @@ const PlaidIntegration: React.FC = () => {
 };
 
 const PlaidLinkHandler: React.FC<{ linkToken: string }> = ({ linkToken }) => {
+  const {credentials} = useGlobalState()
   const onSuccess = (public_token: string) => {
+    if (credentials != undefined) {
     fetch('/api/getAccessToken', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ public_token }),
+      body: JSON.stringify({ 
+        credentials,
+        public_token }),
     });
+    }
   };
 
   const { open, ready } = usePlaidLink({ token: linkToken, onSuccess });

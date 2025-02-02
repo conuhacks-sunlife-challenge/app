@@ -120,7 +120,7 @@ const Prompts: React.FC = () => {
       </form>
     </div>
     <div>
-    <button className="skip-button" onClick={() => window.location.href = '/next-page'}>
+    <button className="skip-button" onClick={() => navigate('/plaid')}>
     Skip
   </button>
     </div>

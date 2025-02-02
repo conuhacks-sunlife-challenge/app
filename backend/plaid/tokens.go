@@ -8,12 +8,15 @@ import (
 	"os"
 	"time"
 
+	"server/Database"
+
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/plaid/plaid-go/plaid"
 )
 
-func Init() {
+func Init(dbInstance Database.DatabaseInstance) {
+
 	err := godotenv.Load()
 	if err != nil {
 		fmt.Println("Error loading the .env file %w", err)
@@ -38,10 +41,16 @@ func Init() {
 	configuration.AddDefaultHeader("PLAID-SECRET", PLAID_SECRET)
 	configuration.UseEnvironment(environments[PLAID_ENV])
 	client = plaid.NewAPIClient(configuration)
+	db = dbInstance
 }
 
+type Credentials struct {
+    Email string `bson:"_id"`
+    Password string `bson:"password"`
+}
 func CreateLinkToken(c *gin.Context) {
 	ctx := context.Background()
+
 
 	// Get the client_user_id
 	clientUserId := time.Now().String()
@@ -56,15 +65,31 @@ func CreateLinkToken(c *gin.Context) {
 		fmt.Println(err)
 	}
 
+	token := resp.GetLinkToken()
 	c.JSON(http.StatusOK, gin.H{
-		"link_token": resp.GetLinkToken(),
+		"link_token": token,
 	})
 }
 
 func GetAccessToken(c *gin.Context) {
 	ctx := context.Background()
 
+	var credentials Credentials
+	err := c.BindJSON(&credentials)
+
+	if err != nil {
+		panic(err)
+	}
+
+	success, err := db.Authenticate(credentials.Email, credentials.Password)
+	if (err != nil || !success) {
+		return
+	}
+
 	var requestBody struct {
+
+		Email string `json:"_id"`
+		Password string `json:"password"`
 		PublicToken string `json:"public_token"`
 	}
 	if err := c.ShouldBindJSON(&requestBody); err != nil {
@@ -89,6 +114,7 @@ func GetAccessToken(c *gin.Context) {
 
 	fmt.Println("access token: " + accessToken)
 	fmt.Println("item ID: " + itemID)
+	db.AddBankCredentials(credentials.Email, itemID, accessToken)
 
 	c.JSON(http.StatusOK, gin.H{"public_token_exchange": "complete"})
 }

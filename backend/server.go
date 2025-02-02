@@ -23,7 +23,6 @@ func check(err error) {
 }
 
 func init() {
-	plaid.Init()
 
 	godotenv.Load()
 	mongodb_user := os.Getenv("DATABASE_USERNAME")
@@ -31,6 +30,8 @@ func init() {
 	mongodb_uri := os.Getenv("DATABASE_URI")
 
 	db = Database.Connect(mongodb_user, mongodb_password, mongodb_uri)
+
+	plaid.Init(db)
 }
 
 type User struct {
@@ -63,6 +64,7 @@ type Credentials struct {
     Email string `bson:"_id"`
     Password string `bson:"password"`
 }
+
 func authenticationHandler(ctx *gin.Context) {
 	credentials := Credentials{}
 	err := ctx.BindJSON(&credentials)

@@ -47,6 +47,16 @@ func (db DatabaseInstance) AddUser(email, password, first_name, last_name string
     return nil
 }
 
+func (db DatabaseInstance) AddBankCredentials(email, itemID, accessToken string) {
+    usersCollection := db.production.Collection("users")
+    filter := bson.M{"_id": email}
+    update := bson.M{"$set": bson.M{"item_id": itemID, "access_token": accessToken}}
+    _, err := usersCollection.UpdateOne(db.ctx, filter, update)
+    if err != nil {
+        panic(err)
+    }
+}
+
 func (db DatabaseInstance) CheckUser(email string) (*User, error) {
     usersCollection := db.production.Collection("users")
 
