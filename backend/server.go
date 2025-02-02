@@ -32,8 +32,15 @@ func init() {
 	db = Database.Connect(mongodb_user, mongodb_password, mongodb_uri)
 }
 
+type User struct {
+    Email string `bson:"_id"`
+    Password string `bson:"password"`
+    FirstName string `bson:"first_name"`
+    LastName string `bson:"last_name"`
+}
+
 func newUserHandler(ctx *gin.Context) {
-	user := Database.User{}
+	user := User{}
 	err := ctx.BindJSON(&user)
 	check(err)
 
@@ -44,9 +51,8 @@ func newUserHandler(ctx *gin.Context) {
 		ctx.AbortWithStatus(400)
 	}
 
-	err = db.AddUser(user)
+	err = db.AddUser(user.Email, user.Password, user.FirstName, user.LastName)
 	check(err)
-
 
 	ctx.Status(200)
 }
