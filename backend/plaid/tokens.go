@@ -13,7 +13,7 @@ import (
 	"github.com/plaid/plaid-go/plaid"
 )
 
-func init() {
+func Init() {
 	err := godotenv.Load()
 	if err != nil {
 		fmt.Println("Error loading the .env file %w", err)

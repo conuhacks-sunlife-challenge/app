@@ -89,8 +89,8 @@ func main() {
 	r.POST("api/createLinkToken", plaid.CreateLinkToken)
 	r.POST("api/getAccessToken", plaid.GetAccessToken)
 	r.POST("api/newUser", newUserHandler)
-	r.POST("api/accounts", plaid.accounts)
-	r.POST("api/transactions", plaid.transactions)
+	r.POST("api/accounts", plaid.Accounts)
+	r.POST("api/transactions", plaid.Transactions)
 	r.POST("api/auth", authenticationHandler)
 	r.Run()
 }
