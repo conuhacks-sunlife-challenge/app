@@ -5,26 +5,22 @@ const Prompts: React.FC = () => {
   const [age, setAge] = useState<number | ''>('');
   const [occupation, setOccupation] = useState<string>('');
   const [income, setIncome] = useState<number | ''>('');
-  const [purpose, setPurpose] = useState<string[]>([]); // Store multiple selections
+  const [purpose, setPurpose] = useState<string[]>([]);
 
-  // Handle checkbox selection
   const handlePurposeChange = (value: string) => {
     setPurpose((prev) =>
       prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]
     );
   };
 
-  // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate that all fields are filled
     if (age === '' || occupation === '' || income === '' || purpose.length === 0) {
       alert('Please fill out all fields.');
       return;
     }
 
-    // Log the form data
     console.log('Form Data:', { age, occupation, income, purpose });
     alert('Form submitted successfully!');
 
@@ -52,7 +48,6 @@ const Prompts: React.FC = () => {
           />
         </div>
 
-        {/* Occupation */}
         <div className="form-group">
           <label htmlFor="occupation">2. What is your occupation?</label>
           <select
@@ -71,7 +66,6 @@ const Prompts: React.FC = () => {
           </select>
         </div>
 
-        {/* Monthly Income */}
         <div className="form-group">
           <label htmlFor="income">3. What is your monthly income?</label>
           <select
@@ -94,7 +88,6 @@ const Prompts: React.FC = () => {
           </select>
         </div>
 
-        {/* Purpose (Multiple Selections) */}
         <div className="form-group">
           <label>4. What are you looking for from this platform?</label>
           <div className="checkbox-group">
@@ -118,7 +111,6 @@ const Prompts: React.FC = () => {
           </div>
         </div>
 
-        {/* Submit Button */}
         <button type="submit" className="submit-button">
             Submit
         </button>
