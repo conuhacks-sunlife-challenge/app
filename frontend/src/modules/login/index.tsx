@@ -11,6 +11,7 @@ const Login: React.FC = () => {
   
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [incorrect, setIncorrect] = useState<boolean>(false);
 
   const authenticate = async (credentials: Credentials) => {
     const body = JSON.stringify(credentials)
@@ -39,6 +40,7 @@ const Login: React.FC = () => {
     setPassword('');
 
     if (authStatus !== 200) {
+      setIncorrect(true)
       return
     }
 
@@ -72,6 +74,7 @@ const Login: React.FC = () => {
             required
           />
         </div>
+        {incorrect && (<div className="password-mismatch">Incorrect credentials!</div>) }
 
         <button type="submit">Login</button>
       </form>

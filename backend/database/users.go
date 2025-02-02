@@ -54,6 +54,7 @@ func (db DatabaseInstance) CheckUser(email string) (*User, error) {
     var user User
     err := usersCollection.FindOne(db.ctx, filter).Decode(&user)
 
+    fmt.Println(user)
     if err != nil {
         if err == mongo.ErrNoDocuments {
             return nil, nil
@@ -68,25 +69,28 @@ func (db DatabaseInstance) Authenticate(email, password string) (bool, error) {
 
     usersCollection := db.production.Collection("users")
 
-    filter := bson.D{{"email", email}}
-
+    fmt.Println("Email: ", email)
+    filter := bson.D{{"_id", email}}
     var user User
-
     err := usersCollection.FindOne(db.ctx, filter).Decode(&user)
 
     if err == mongo.ErrNoDocuments {
+        fmt.Println("Email not found")
         _ = bcrypt.CompareHashAndPassword([]byte(dummyHash), []byte(password))
         return false, nil
     } else if err != nil {
+        fmt.Println("Other error")
         return false, err
     }
 
     err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 
     if err != nil {
+        fmt.Println("Not the same")
         return false, nil
     }
 
+    fmt.Println("The same")
     return true, nil
 }
 

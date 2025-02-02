@@ -102,3 +102,9 @@ body {
     font-size: 14px;
   }
 }
+
+.password-mismatch {
+  font-size: 14px;
+  color: red; 
+  margin-top: 5px;
+}

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -49,6 +50,7 @@ func newUserHandler(ctx *gin.Context) {
 
 	if already_exists != nil {
 		ctx.AbortWithStatus(400)
+		return
 	}
 
 	err = db.AddUser(user.Email, user.Password, user.FirstName, user.LastName)
@@ -65,6 +67,7 @@ func authenticationHandler(ctx *gin.Context) {
 	credentials := Credentials{}
 	err := ctx.BindJSON(&credentials)
 	check(err)
+	fmt.Println("Password: ", credentials.Password)
 
 	success, err := db.Authenticate(credentials.Email, credentials.Password)
 	check(err)
