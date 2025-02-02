@@ -59,7 +59,7 @@ func main() {
 	r := gin.Default()
 	r.GET("api/hello_world", hello_world)
 	r.POST("api/createLinkToken", createLinkToken)
-	r.POST("api/getAcessToken", getAccessToken)
+	r.POST("api/getAccessToken", getAccessToken)
 	r.Run()
 }
 
@@ -94,7 +94,15 @@ func createLinkToken(c *gin.Context) {
 
 func getAccessToken(c *gin.Context) {
 	ctx := context.Background()
-	publicToken := c.PostForm("public_token")
+
+	var requestBody struct {
+		PublicToken string `json:"public_token"`
+	}
+	if err := c.ShouldBindJSON(&requestBody); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	publicToken := requestBody.PublicToken
 
 	// exchange the public_token for an access_token
 	exchangePublicTokenReq := plaid.NewItemPublicTokenExchangeRequest(publicToken)
