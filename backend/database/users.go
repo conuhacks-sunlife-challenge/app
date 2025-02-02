@@ -18,30 +18,23 @@ type User struct {
 
 
 // TODO: Change input to be one object
-func (db DatabaseInstance) AddUser(email, password, firstname, lastname string) (bool, error) {
+func (db DatabaseInstance) AddUser(user User) error {
 
     usersCollection := db.production.Collection("users")
-    duplicateUser, err := db.CheckUser(email)
+    duplicateUser, err := db.CheckUser(user.Email)
 
     if err != nil {
-        return false, err
+        return err
     }
 
     if duplicateUser != nil {
-        return false, fmt.Errorf("User already exists! Please check for existing user before adding. Email: %s", duplicateUser.Email)
-    }
-
-    user := User{
-        Email: email,
-        Password: password,
-        FirstName: firstname,
-        LastName: lastname,
+        return fmt.Errorf("User already exists! Please check for existing user before adding. Email: %s", duplicateUser.Email)
     }
 
     usersCollection.InsertOne(db.ctx, user)
 
 
-    return true, nil
+    return nil
 }
 
 func (db DatabaseInstance) CheckUser(email string) (*User, error) {

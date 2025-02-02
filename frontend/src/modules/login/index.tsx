@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './index.css';
+import User from '../../types/user';
+import endpoints from '../../endpoints';
 
 const Login: React.FC = () => {
 
@@ -9,12 +11,25 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const authenticate = async (user: User) => {
+    const body = JSON.stringify(user)
+    const req = new Request(endpoints.NewUser, {
+
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: body,
+    })
+    const res = await fetch(req)
+    return res.status
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
 
     console.log('Form submitted:', {email, password });
-
     setEmail('');
     setPassword('');
 
