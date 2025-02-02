@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './index.css';
 import snappy_logo from '../../assets/snappy_logo.svg';
-// import MainMenu from '../dashboard';
 
 const Home = () => {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
+  const login = useNavigate();
 
   const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
@@ -14,13 +14,18 @@ const Home = () => {
     navigate('/create-account');
   };
 
+  const loginClick = (f: {preventDefault:()=>void;}) => {
+    f.preventDefault();
+    login('/login');
+
+  }
+
   return (
     <>
-    {/* <MainMenu/> ---for demonstration--- */}
     <div className="home">
       <div className="logo"><a href="/"><img src={snappy_logo} id="logo" /></a></div>
       <div className="navbar">
-        <button className="nav-button">Sign In</button>
+        <button className="nav-button" onClick={loginClick}>Sign In</button>
       </div>
       <div className="main-content">
         <h1>Financial help in a snap</h1>
