@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 import './index.css';
-
+import snappy_logo from '../../assets/snappy_logo.svg';
 
 const Home = () => {
   const [email, setEmail] = useState("");
@@ -15,7 +15,7 @@ const Home = () => {
 
   return (
     <div className="home">
-      <div className="logo">Snappy</div>
+      <div className="logo"><a href="/"><img src={snappy_logo} id="logo" /></a></div>
       <div className="navbar">
         <button className="nav-button">Sign In</button>
       </div>
