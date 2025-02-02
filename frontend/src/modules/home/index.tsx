@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
-import './Home.css';
-import Dashboard from './Login';
+import './index.css';
+
 
 const Home = () => {
   const [email, setEmail] = useState("");
@@ -41,15 +41,4 @@ const Home = () => {
   );
 };
 
-const AppWrapper = () => {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/create-account" element={<Dashboard />} />
-      </Routes>
-    </Router>
-  );
-};
-
-export default AppWrapper;
+export default Home;
