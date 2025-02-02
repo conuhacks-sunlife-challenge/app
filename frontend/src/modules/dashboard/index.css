@@ -7,3 +7,9 @@
 #top-navigation {
     width: 97.5%;
 }
+
+#logout-button {
+    position: absolute;
+    right:0px;
+    top:0px;
+}
